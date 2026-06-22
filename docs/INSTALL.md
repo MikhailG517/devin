@@ -6,14 +6,68 @@
 [`MikhailG517/devin`](https://github.com/MikhailG517/devin) через GitHub Pages:
 
 - Страница установки: <https://mikhailg517.github.io/devin/>
-- Подробная инструкция: [`MikhailG517/devin` → `docs/INSTALL.md`](https://github.com/MikhailG517/devin/blob/main/docs/INSTALL.md)
+- Подробная инструкция: [`MikhailG517/devin` → `docs/INSTALL.md`](https://github.com/MikhailG517/devin/blob/gh-pages/docs/INSTALL.md)
 - ID расширения: `gdobkpjnopnafcbnhmfanccelegodchc`
 - Update URL: `https://mikhailg517.github.io/devin/updates.xml`
 
-Chrome разрешает одношаговую установку self-hosted расширения (без «режима
-разработчика») только через корпоративную политику `ExtensionInstallForcelist`.
-Готовые файлы политики для Linux/Windows/macOS лежат в папке `policies/`
-репозитория `devin`. После установки расширение обновляется автоматически.
+Chromium-браузеры разрешают одношаговую установку self-hosted расширения (без
+«режима разработчика») только через корпоративную политику
+`ExtensionInstallForcelist`. Готовые файлы политики для Linux/Windows/macOS лежат
+в папке `policies/` репозитория `devin`. После установки расширение обновляется
+автоматически.
+
+### Windows — один файл для всех Chromium-браузеров
+
+`policies/windows/devin-balance-guard.reg` прописывает политику сразу для **всех**
+Chromium-браузеров: Chrome, Edge, Brave, Opera, Yandex, Chromium (и Vivaldi —
+он читает ветку Chrome). Лишние ветки безвредны: каждый браузер читает только
+свою.
+
+1. **Запустите .reg от имени администратора.** Политика пишется в
+   `HKEY_LOCAL_MACHINE` — при обычном двойном клике без прав администратора
+   Windows тихо откажет, и ничего не установится. ПКМ по файлу → «Слияние» →
+   подтвердите UAC; либо в «Терминал (администратор)»:
+   `reg import C:\путь\devin-balance-guard.reg`.
+2. **Полностью закройте браузер** (все окна) и откройте заново.
+3. **Проверьте:** откройте `<browser>://policy` (например `edge://policy`,
+   `chrome://policy`, `brave://policy`) → кнопка **«Перезагрузить политики»** →
+   в списке должна быть `ExtensionInstallForcelist` со значением
+   `gdobkpjnopnafcbnhmfanccelegodchc;https://mikhailg517.github.io/devin/updates.xml`.
+4. Откройте `<browser>://extensions` — «Devin Balance Guard» появится
+   автоматически (иногда нужно подождать ~1 минуту или ещё раз перезапустить
+   браузер). Принудительно-установленное расширение нельзя удалить вручную —
+   это нормально.
+
+> **Адреса политик для каждого браузера различаются** — поэтому .reg, написанный
+> только под `...\Google\Chrome\...`, в Edge/Brave/Opera/Yandex не сработает.
+> Этот файл закрывает все ветки сразу.
+
+| Браузер | Ветка реестра (HKLM\SOFTWARE\Policies\…) | Страница политик |
+| --- | --- | --- |
+| Chrome / Vivaldi | `Google\Chrome` | `chrome://policy` |
+| Edge | `Microsoft\Edge` | `edge://policy` |
+| Brave | `BraveSoftware\Brave` | `brave://policy` |
+| Opera | `Opera Software\Opera` | `opera://policy` |
+| Yandex | `YandexBrowser` | `browser://policy` |
+| Chromium | `Chromium` | `chrome://policy` |
+
+**Не появилось расширение?**
+- Проверьте, что .reg запущен с правами администратора: в `regedit` ветка
+  `HKLM\SOFTWARE\Policies\<…>\ExtensionInstallForcelist` должна содержать
+  параметр `"1"`.
+- На `<browser>://policy` политики нет → реестр не записался (нет прав/не та
+  ветка) — перезапустите .reg от администратора.
+- Откройте `https://mikhailg517.github.io/devin/updates.xml` — должен открыться
+  XML (если открывается, сервер обновлений работает).
+
+### Linux / macOS
+
+- Linux: скопируйте `policies/linux/devin-balance-guard.json` в каталог
+  managed-политик браузера (Chrome: `/etc/opt/chrome/policies/managed/`,
+  Edge: `/etc/opt/edge/policies/managed/`, Brave:
+  `/etc/brave/policies/managed/`) и перезапустите браузер.
+- macOS: примените `policies/macos/com.google.Chrome.ExtensionInstallForcelist.plist`
+  (см. комментарий в самом файле) и перезапустите браузер.
 
 ---
 

@@ -64,10 +64,11 @@
 
     <h2>Установка без «режима разработчика»</h2>
     <p>
-      Chrome разрешает одношаговую установку self-hosted расширения только
+      Chromium-браузеры (Chrome, Edge, Brave, Opera, Yandex, Chromium)
+      разрешают одношаговую установку self-hosted расширения только
       через корпоративную политику <code>ExtensionInstallForcelist</code>.
       Готовые файлы политики — в папке
-      <a href="https://github.com/MikhailG517/devin/tree/main/policies">policies/</a>.
+      <a href="https://github.com/MikhailG517/devin/tree/gh-pages/policies">policies/</a>.
     </p>
 
     <h3>Linux (Chrome)</h3>
@@ -76,12 +77,15 @@ sudo curl -fsSL https://mikhailg517.github.io/devin/policies/linux/devin-balance
   -o /etc/opt/chrome/policies/managed/devin-balance-guard.json
 # полностью перезапустить Chrome</pre>
 
-    <h3>Windows (Chrome)</h3>
+    <h3>Windows (все Chromium-браузеры)</h3>
     <p>
       Скачайте
-      <a href="policies/windows/devin-balance-guard.reg">devin-balance-guard.reg</a>,
-      запустите двойным кликом (нужны права администратора) и перезапустите
-      браузер.
+      <a href="policies/windows/devin-balance-guard.reg">devin-balance-guard.reg</a>
+      — один файл прописывает политику сразу для Chrome, Edge, Brave, Opera,
+      Yandex и Chromium. Запустите его <strong>от имени администратора</strong>
+      (ПКМ → «Слияние» → подтвердите UAC; запись в HKLM без админ-прав молча не
+      сработает) и полностью перезапустите браузер. Проверка:
+      <code>&lt;browser&gt;://policy</code> → «Перезагрузить политики».
     </p>
 
     <h3>macOS (Chrome)</h3>

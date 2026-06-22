@@ -1,13 +1,66 @@
 Windows Registry Editor Version 5.00
 
-; Force-install Devin Balance Guard from the self-hosted update server.
-; Works in Chrome, Edge (use the Edge key block below) and other Chromium
-; browsers WITHOUT enabling Developer mode. Run by double-clicking the .reg
-; file (admin rights required) and then fully restart the browser.
+; =====================================================================
+;  Devin Balance Guard — принудительная установка во ВСЕ Chromium-браузеры
+;  на Windows БЕЗ «режима разработчика» (ExtensionInstallForcelist).
+;
+;  Как применить:
+;    1. ПКМ по этому файлу → «Слияние» И запустить ОТ ИМЕНИ АДМИНИСТРАТОРА
+;       (запись идёт в HKEY_LOCAL_MACHINE — без админ-прав Windows тихо
+;       откажет). Либо: Терминал (администратор) →
+;         reg import C:\путь\devin-balance-guard.reg
+;    2. Полностью закрыть браузер (все окна) и открыть заново.
+;    3. Проверить: <browser>://policy → «Перезагрузить политики» → должна быть
+;       ExtensionInstallForcelist; затем <browser>://extensions — расширение
+;       появится автоматически (иногда нужно подождать ~1 минуту).
+;
+;  ID:        gdobkpjnopnafcbnhmfanccelegodchc
+;  Update URL: https://mikhailg517.github.io/devin/updates.xml
+;
+;  В каждом браузере прописаны две политики:
+;    ExtensionInstallForcelist — принудительная установка + автообновление;
+;    ExtensionInstallAllowlist — явное разрешение (на случай блок-листа «*»).
+;  Лишние ветки безвредны: браузер читает только свою.
+; =====================================================================
 
+; ----- Google Chrome (а также Vivaldi, читающий политики Chrome) -----
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist]
 "1"="gdobkpjnopnafcbnhmfanccelegodchc;https://mikhailg517.github.io/devin/updates.xml"
 
-; --- Microsoft Edge: uncomment the block below instead ---
-; [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForcelist]
-; "1"="gdobkpjnopnafcbnhmfanccelegodchc;https://mikhailg517.github.io/devin/updates.xml"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\ExtensionInstallAllowlist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc"
+
+; ----- Microsoft Edge -----
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForcelist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc;https://mikhailg517.github.io/devin/updates.xml"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallAllowlist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc"
+
+; ----- Brave -----
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\BraveSoftware\Brave\ExtensionInstallForcelist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc;https://mikhailg517.github.io/devin/updates.xml"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\BraveSoftware\Brave\ExtensionInstallAllowlist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc"
+
+; ----- Opera -----
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Opera Software\Opera\ExtensionInstallForcelist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc;https://mikhailg517.github.io/devin/updates.xml"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Opera Software\Opera\ExtensionInstallAllowlist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc"
+
+; ----- Yandex Browser -----
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\YandexBrowser\ExtensionInstallForcelist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc;https://mikhailg517.github.io/devin/updates.xml"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\YandexBrowser\ExtensionInstallAllowlist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc"
+
+; ----- Chromium (open-source сборки) -----
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Chromium\ExtensionInstallForcelist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc;https://mikhailg517.github.io/devin/updates.xml"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Chromium\ExtensionInstallAllowlist]
+"1"="gdobkpjnopnafcbnhmfanccelegodchc"
