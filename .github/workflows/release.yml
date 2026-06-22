@@ -1,0 +1,62 @@
+name: Publish extension
+
+# Rebuilds the signed .crx + updates.xml from the source repo and commits them
+# here. GitHub Pages then serves them, and installed browsers auto-update.
+#
+# Triggered manually, or automatically when devin_cost dispatches "new-release".
+# Requires repo secret CRX_KEY_BASE64 (base64 of the signing .pem).
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [new-release]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-extension
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout hosting repo (this repo)
+        uses: actions/checkout@v4
+
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          repository: MikhailG517/devin_cost
+          ref: main
+          path: source
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build signed CRX + updates.xml
+        env:
+          CRX_KEY_BASE64: ${{ secrets.CRX_KEY_BASE64 }}
+        run: |
+          if [ -z "$CRX_KEY_BASE64" ]; then
+            echo "::error::CRX_KEY_BASE64 secret is not set"; exit 1
+          fi
+          ( cd source && bash scripts/build-release.sh )
+          cp source/release/devin-balance-guard.crx ./devin-balance-guard.crx
+          cp source/release/updates.xml ./updates.xml
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          rm -rf source
+          if git diff --quiet -- devin-balance-guard.crx updates.xml; then
+            echo "No changes to publish."
+          else
+            VERSION="$(grep -oE "version='[^']+'" updates.xml | head -1 | cut -d"'" -f2)"
+            git add devin-balance-guard.crx updates.xml
+            git commit -m "Publish extension v${VERSION}"
+            git push
+          fi

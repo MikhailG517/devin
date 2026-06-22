@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Devin Balance Guard — установка и автообновление</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        line-height: 1.55;
+      }
+      h1 { margin-bottom: 0.2em; }
+      .sub { color: #666; margin-top: 0; }
+      code, pre {
+        background: rgba(127, 127, 127, 0.15);
+        border-radius: 6px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      code { padding: 1px 5px; }
+      pre { padding: 12px 14px; overflow-x: auto; }
+      .btn {
+        display: inline-block;
+        background: #1a73e8;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      .card {
+        border: 1px solid rgba(127, 127, 127, 0.3);
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin: 18px 0;
+      }
+      .id { word-break: break-all; }
+    </style>
+  </head>
+  <body>
+    <h1>Devin Balance Guard</h1>
+    <p class="sub">
+      Расширение Chrome (MV3): показывает остаток баланса Devin и
+      автоматически останавливает активные сессии при падении баланса ниже
+      порога. Этот сайт раздаёт подписанную сборку и обслуживает
+      <strong>автообновление</strong>.
+    </p>
+
+    <p>
+      <a class="btn" href="devin-balance-guard.crx" download>Скачать .crx</a>
+      &nbsp;
+      <a href="https://github.com/MikhailG517/devin">Репозиторий</a>
+    </p>
+
+    <div class="card">
+      <strong>ID расширения:</strong>
+      <code class="id">gdobkpjnopnafcbnhmfanccelegodchc</code><br />
+      <strong>Update URL:</strong>
+      <code class="id">https://mikhailg517.github.io/devin/updates.xml</code>
+    </div>
+
+    <h2>Установка без «режима разработчика»</h2>
+    <p>
+      Chrome разрешает одношаговую установку self-hosted расширения только
+      через корпоративную политику <code>ExtensionInstallForcelist</code>.
+      Готовые файлы политики — в папке
+      <a href="https://github.com/MikhailG517/devin/tree/main/policies">policies/</a>.
+    </p>
+
+    <h3>Linux (Chrome)</h3>
+    <pre>sudo mkdir -p /etc/opt/chrome/policies/managed
+sudo curl -fsSL https://mikhailg517.github.io/devin/policies/linux/devin-balance-guard.json \
+  -o /etc/opt/chrome/policies/managed/devin-balance-guard.json
+# полностью перезапустить Chrome</pre>
+
+    <h3>Windows (Chrome)</h3>
+    <p>
+      Скачайте
+      <a href="policies/windows/devin-balance-guard.reg">devin-balance-guard.reg</a>,
+      запустите двойным кликом (нужны права администратора) и перезапустите
+      браузер.
+    </p>
+
+    <h3>macOS (Chrome)</h3>
+    <pre>sudo cp com.google.Chrome.ExtensionInstallForcelist.plist \
+  /Library/Managed\ Preferences/com.google.Chrome.plist
+# полностью перезапустить Chrome</pre>
+
+    <h2>Автообновление</h2>
+    <p>
+      Браузер периодически опрашивает <code>updates.xml</code> и автоматически
+      ставит новую версию, как только она опубликована здесь — действий от
+      пользователя не требуется.
+    </p>
+
+    <p style="color: #888; font-size: 0.9em">
+      Подробная инструкция:
+      <a href="https://github.com/MikhailG517/devin/blob/main/docs/INSTALL.md">docs/INSTALL.md</a>.
+    </p>
+  </body>
+</html>
