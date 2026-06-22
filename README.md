@@ -51,4 +51,6 @@ Actions** этого репозитория нужно добавить:
   что соответствует `key` в `extension/manifest.json` исходников.
 
 И включить **GitHub Pages**: Settings → Pages → Source = `Deploy from a branch`,
-branch = `main`, folder = `/ (root)`.
+branch = `gh-pages`, folder = `/ (root)`. Ветка `gh-pages` — основная (default)
+ветка этого репозитория: в ней лежат и публикуемые файлы, и workflow
+автопубликации, который коммитит новые `.crx`/`updates.xml` обратно в неё.
