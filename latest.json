@@ -1,0 +1,18 @@
+{
+  "version": "1.0.1",
+  "build": "260626_1131",
+  "page": "https://mikhailg517.github.io/devin/",
+  "downloads": {
+    "windows_installer": "https://mikhailg517.github.io/devin/downloads/DevinBalance_1.0.1-Setup.exe",
+    "windows": "https://mikhailg517.github.io/devin/downloads/DevinBalance_1.0.1-windows.zip",
+    "linux": "https://mikhailg517.github.io/devin/downloads/DevinBalance_1.0.1-linux.zip"
+  },
+  "bin": {
+    "windows": "https://mikhailg517.github.io/devin/downloads/DevinBalance_1.0.1-windows.exe",
+    "linux": "https://mikhailg517.github.io/devin/downloads/DevinBalance_1.0.1-linux"
+  },
+  "sha256": {
+    "windows": "873bda8b5ea7d1740b3deb6295689f6c04d84c311b0593de2b76a6f0a00e6669",
+    "linux": "3569460e33d558a98bc8fba88d1ed98b9f04b94339f407a1ee8c25c11613f58f"
+  }
+}
