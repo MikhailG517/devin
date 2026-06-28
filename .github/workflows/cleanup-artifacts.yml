@@ -1,0 +1,48 @@
+name: Cleanup old artifacts
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete artifacts older than 1 day
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const maxAgeDays = 1;
+            const cutoff = Date.now() - maxAgeDays * 24 * 60 * 60 * 1000;
+            let deleted = 0;
+
+            let page = 1;
+            while (true) {
+              const { data } = await github.rest.actions.listArtifactsForRepo({
+                owner, repo, per_page: 100, page
+              });
+              if (data.artifacts.length === 0) break;
+
+              let deletedThisPage = false;
+              for (const a of data.artifacts) {
+                if (new Date(a.created_at).getTime() < cutoff) {
+                  try {
+                    await github.rest.actions.deleteArtifact({ owner, repo, artifact_id: a.id });
+                    deleted++;
+                    deletedThisPage = true;
+                    console.log(`Deleted: ${a.name} (${a.id}), created ${a.created_at}`);
+                  } catch (e) {
+                    console.log(`Failed: ${a.id} — ${e.message}`);
+                  }
+                }
+              }
+              if (!deletedThisPage) page++;
+              if (data.artifacts.length < 100 && !deletedThisPage) break;
+            }
+            console.log(`Total deleted: ${deleted}`);
